@@ -34,7 +34,7 @@ def create_and_train_model():
                   metrics=["accuracy"])
 
     print("Training model... This may take a minute.")
-    model.fit(x_train, y_train, epochs=8, validation_data=(x_test, y_test))
+    model.fit(x_train, y_train, epochs=5, validation_data=(x_test, y_test))
     model.save("mnist_model.keras")
     return model
 
@@ -57,7 +57,7 @@ class MNISTApp:
         root.tk.call('tk','scaling',1.0)
         self.canvas.pack()
 
-        self.image = Image.new("L", (280, 280), color=255)
+        self.image = Image.new("L", (280, 280), color=0)
         self.draw = ImageDraw.Draw(self.image)
 
         self.canvas.bind("<B1-Motion>", self.paint)
@@ -76,11 +76,11 @@ class MNISTApp:
         x1, y1 = (event.x - 8), (event.y - 8)
         x2, y2 = (event.x + 8), (event.y + 8)
         self.canvas.create_oval(x1, y1, x2, y2, fill="white", width=0)
-        self.draw.ellipse([x1, y1, x2, y2], fill=0)
+        self.draw.ellipse([x1, y1, x2, y2], fill=255)
         
     def clear(self):
         self.canvas.delete("all")
-        self.draw.rectangle([0, 0, 280, 280], fill=255)
+        self.draw.rectangle([0, 0, 280, 280], fill=0)
         self.result_label.config(text="Draw a digit and click Predict")
 
     def predict(self):
@@ -93,8 +93,12 @@ class MNISTApp:
         digit = np.argmax(prediction)
         confidence = np.max(prediction)
 
-        fig = plt.figure(figsize=(10,10))
-        ax2 = fig.add_subplot(1,1,1)
+        fig = plt.figure(figsize=(9,9))
+        ax1 = fig.add_subplot(1,2,1)
+        ax1.imshow(img_resized, cmap='gray')
+        ax1.set_aspect(1.0)
+
+        ax2 = fig.add_subplot(1,2,2)
         _ = ax2.bar(range(10), prediction*10, alpha=0.8, color='b')
         ax2.set_xticks(np.arange(10))
         ax2.set_xticklabels(range(10))
@@ -106,7 +110,7 @@ class MNISTApp:
 
         plt.tight_layout()
         plt.show()
-        self.result_label.config()
+        self.result_label.config(text = f"Prediction : {digit} \n Confidence : {confidence * 100}%")
 
 # ---------------------------
 # 3. Run the app
@@ -114,4 +118,5 @@ class MNISTApp:
 if __name__ == "__main__":
     root = tk.Tk()
     app = MNISTApp(root, model)
+
     root.mainloop()
