@@ -51,7 +51,7 @@ class MNISTApp:
     def __init__(self, root, model):
         self.root = root
         self.model = model
-        self.root.title("AI Digit Recognizer")
+        self.root.title("AI Digit Recognizer - Abhay Sharma")
 
         self.canvas = tk.Canvas(root, width=280, height=280, bg="black")
         root.tk.call('tk','scaling',1.0)
@@ -120,3 +120,4 @@ if __name__ == "__main__":
     app = MNISTApp(root, model)
 
     root.mainloop()
+
