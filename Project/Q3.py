@@ -6,4 +6,4 @@ string = ["Bananas","Python","Call Of Duty","Root","Death","Music","GitHub"]
 elements = [c(string),r(1,1000)]
 
 for i in range(1,8):
-    mylist += c(elements)
+    mylist.append(c(elements))
